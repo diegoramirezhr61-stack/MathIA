@@ -23,32 +23,45 @@
 
     </div>
 
-    <script>
+   <script>
 
-                async function enviarPregunta() {
+async function enviarPregunta() {
 
-            let pregunta = document.getElementById("pregunta").value;
+    let pregunta = document.getElementById("pregunta").value;
 
-            let respuestaDiv = document.getElementById("respuesta");
+    let respuestaDiv = document.getElementById("respuesta");
 
-            respuestaDiv.innerHTML = "Pensando...";
+    respuestaDiv.innerHTML = "Pensando...";
 
-            const respuesta = await fetch("/preguntar", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    pregunta: pregunta
-                })
-            });
+    try {
 
-            const datos = await respuesta.json();
+        const respuesta = await fetch("/preguntar", {
 
-            respuestaDiv.innerHTML = datos.respuesta;
-        }
+            method: "POST",
 
-    </script>
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-</body>
-</html>
+            body: JSON.stringify({
+                pregunta: pregunta
+            })
+
+        });
+
+        const datos = await respuesta.json();
+
+        console.log(datos);
+
+        respuestaDiv.innerHTML = datos.respuesta;
+
+    } catch(error) {
+
+        console.error(error);
+
+        respuestaDiv.innerHTML =
+            "Error de conexión: " + error.message;
+    }
+}
+
+</script>
